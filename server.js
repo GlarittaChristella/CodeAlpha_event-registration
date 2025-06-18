@@ -16,6 +16,9 @@ app.use(express.json());
 // Routes
 const eventRoutes = require('./routes/events');
 const registrationRoutes = require('./routes/registrations');
+app.get('/', (req, res) => {
+  res.send('🎉 Event Registration API is running!');
+});
 
 app.use('/events', eventRoutes);
 app.use('/registrations', registrationRoutes);
