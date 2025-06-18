@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Registration</title>
+</head>
+<body>
+  <h1>Register for the Event</h1>
+  <form id="registrationForm">
+    <label>Name: <input type="text" name="name" required /></label><br /><br />
+    <label>Email: <input type="email" name="email" required /></label><br /><br />
+    <label>Event ID: <input type="text" name="eventId" required /></label><br /><br />
+    <button type="submit">Register</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const responseText = document.getElementById('response');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('https://code-alpha-event-registration.vercel.app/registrations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        responseText.textContent = res.ok ? '✅ Registered successfully!' : `❌ Error: ${result.message}`;
+      } catch (err) {
+        responseText.textContent = '❌ Network error. Check backend.';
+      }
+    });
+  </script>
+</body>
+</html>
